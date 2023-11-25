@@ -6,8 +6,10 @@ from sklearn.preprocessing import LabelEncoder
 # Check if path exists
 path_raw = 'data/raw/'
 if not os.path.exists(path_raw):
-    # TODO: Create folder if it does not exist
-    pass
+    # Create folder if it does not exist
+    print(f'Path "{path_raw}" does not exist. \n[Creating path "{path_raw}"]')
+    os.makedirs(path_raw)
+    
 
 # Check if file exists
 file = 'AITA-Reddit-Dataset.csv'
@@ -28,8 +30,8 @@ else:
 # Check if path exists
 path_processed = 'data/processed/'
 if not os.path.exists(path_processed):
-    # TODO: Create folder if it does not exist
-    pass
+    print(f'Path "{path_processed}" does not exist. \n[Creating path "{path_processed}"]')
+    os.makedirs(path_processed)
 
 # Check if file exists
 if os.path.exists(path_processed+file):

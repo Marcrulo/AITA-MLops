@@ -1,7 +1,8 @@
 from datasets import load_dataset
 import pandas as pd
 import os
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
 
 # Check if path exists
 path_raw = 'data/raw/'
@@ -35,15 +36,22 @@ if not os.path.exists(path_processed):
 
 # Check if file exists
 if os.path.exists(path_processed+file):
-    assert False, f'Path "{path_processed+file}" already exists. All data is already loaded and processed!'
-
-# Process data
+    print("Processed dataset already exists. Overwritting...")
 else:
     print("Processing data...")
-    df = pd.read_csv(path_raw+file)
-    df = df[["text", "verdict"]]
-    LE = LabelEncoder()
-    df["verdict"] = LE.fit_transform(df["verdict"])
-    df.to_csv(path_processed+file, index=False)
-    print("Done!")
+
+# Process data
+df = pd.read_csv(path_raw+file)
+df = df[["text", "verdict"]]
+preprocessor = ColumnTransformer(
+transformers=[
+    ('Text', 'passthrough', ['text']),
+    ('Verdict', OneHotEncoder(), ['verdict'])
+])
+
+processed = preprocessor.fit_transform(df)
+df = pd.DataFrame(processed, columns=['text','ESH','NAH','NTA','YTA'])
+
+df.to_csv(path_processed+file, index=False)
+print("Done!")
     

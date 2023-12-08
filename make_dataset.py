@@ -55,3 +55,7 @@ df = pd.DataFrame(processed, columns=['text','ESH','NAH','NTA','YTA'])
 df.to_csv(path_processed+file, index=False)
 print("Done!")
     
+    
+    
+# Tokenize and format data
+...

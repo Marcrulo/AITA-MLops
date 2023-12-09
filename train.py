@@ -1,5 +1,5 @@
 import transformers
-from datasets import Dataset
+from datasets import Dataset, load_dataset
 import evaluate
 
 import pandas as pd
@@ -11,7 +11,7 @@ import os
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
 # load data
-df = pd.read_csv('data/processed/AITA-Reddit-Dataset.csv')
+df = load_dataset('tokenized/dataset.hf')
 
 # get last created file
 checkpoint = glob.glob(os.path.join('results','*'))
@@ -28,4 +28,3 @@ else:
 model, tokenizer = LoadModel(chkpt)
 
 
-# 

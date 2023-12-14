@@ -7,7 +7,7 @@ class ModelClass:
 
 
         if self.checkpoint is not None:
-            self.model = transformers.BertForSequenceClassification.from_pretrained(chkpt, num_labels=4, problem_type='multi_label_classification').to('cuda')
+            self.model = transformers.BertForSequenceClassification.from_pretrained(self.checkpoint, num_labels=4, problem_type='multi_label_classification').to('cuda')
         else:
             self.model = transformers.BertForSequenceClassification.from_pretrained(self.model_name, num_labels=4, problem_type='multi_label_classification').to('cuda')
 

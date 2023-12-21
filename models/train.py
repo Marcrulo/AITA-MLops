@@ -1,4 +1,6 @@
 import transformers
+from transformers.utils import logging as transformer_log
+
 from datasets import Dataset, load_dataset, load_from_disk
 import evaluate
 
@@ -10,7 +12,16 @@ import os
 
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
-from model import ModelClass
+from models.model import ModelClass
+
+# logging
+transformer_log.set_verbosity_info()
+logger = transformer_log.get_logger("transformers")
+logger.info("INFO")
+logger.warning("WARN")
+
+
+
 
 # load data
 dataset = load_from_disk('data/tokenized/dataset.hf')
@@ -18,7 +29,7 @@ dataset = load_from_disk('data/tokenized/dataset.hf')
 # dataset = Dataset.from_pandas(df)
 
 # return latest checkpoint - or None, if no checkpoint exists
-checkpoint = glob.glob(os.path.join('results','*'))
+checkpoint = glob.glob(os.path.join('models/results','*'))
 checkpoint.sort(key=os.path.getmtime)
 checkpoint.insert(0,None) # final checkpoint if None, if no actual checkpoints are present
 chkpt = checkpoint[-1]
@@ -37,7 +48,7 @@ def compute_metrics(eval_pred):
 # fine-tune model
 training_args = transformers.TrainingArguments(
     output_dir='./results',          # output directory
-    num_train_epochs=2,              # total number of training epochs
+    num_train_epochs=5,              # total number of training epochs
     per_device_train_batch_size=1,   # batch size per device during training
     per_device_eval_batch_size=1,    # batch size for evaluation
     warmup_steps=500,                # number of warmup steps for learning rate scheduler

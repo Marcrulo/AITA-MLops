@@ -15,10 +15,9 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from models.model import ModelClass
 
 # logging
-transformer_log.set_verbosity_info()
-logger = transformer_log.get_logger("transformers")
-logger.info("INFO")
-logger.warning("WARN")
+# transformer_log.set_verbosity_info()
+# logger = transformer_log.get_logger("transformers")
+
 
 
 
@@ -47,14 +46,14 @@ def compute_metrics(eval_pred):
 
 # fine-tune model
 training_args = transformers.TrainingArguments(
-    output_dir='./results',          # output directory
+    output_dir='./models/results',          # output directory
     num_train_epochs=5,              # total number of training epochs
     per_device_train_batch_size=1,   # batch size per device during training
     per_device_eval_batch_size=1,    # batch size for evaluation
     warmup_steps=500,                # number of warmup steps for learning rate scheduler
     weight_decay=0.01,               # strength of weight decay
     evaluation_strategy='steps',
-    logging_dir='./logs',            # directory for storing logs
+    logging_dir='./models/logs',            # directory for storing logs
     eval_steps=500,
     save_steps=500,
 )

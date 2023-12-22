@@ -7,8 +7,12 @@ train:
 evaluate:
 	python -m models.evaluate
 
+
 docker_data:
 	docker build -f data.dockerfile . -t data:latest
 
 docker_train:
 	docker build -f trainer.dockerfile . -t trainer:latest
+
+gpu_test:
+	docker build -f docker-images/gpu.dockerfile . -t gpu:latest

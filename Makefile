@@ -14,7 +14,7 @@ train:
 train_build:
 	docker build -f docker-images/trainer.dockerfile . -t trainer:latest
 train_run:
-	docker run trainer:latest
+	docker run --rm --gpus all trainer:latest 
 
 
 # Evaluation

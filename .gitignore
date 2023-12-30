@@ -161,6 +161,8 @@ cython_debug/
 
 
 # Data
-data/
+data/raw
+data/processed
+data/tokenized
 logs/
 results/

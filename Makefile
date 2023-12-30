@@ -31,3 +31,8 @@ gpu_build:
 	docker build -f Docker/gpu.dockerfile . -t gpu:latest
 gpu_run:
 	docker run --gpus all gpu:latest
+
+
+# Unittest
+train_test:
+	python -m unittest unittests/train_test.py

@@ -20,10 +20,6 @@ logger.addHandler(file_handler)
 from models.model import ModelClass
 
 
-
-
-
-
 '''
 RAW DATA
 '''

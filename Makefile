@@ -1,6 +1,6 @@
 
 # Data generation
-data:
+dataset:
 	python -m data.make_dataset
 data_build:
 	docker build -f Docker/data.dockerfile . -t data:latest

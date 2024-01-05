@@ -10,7 +10,7 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY data/make_dataset.py data/make_dataset.py
 COPY models/ models/
-COPY config/ config/
+COPY configs/ configs/
 
 # install python packages
 WORKDIR /

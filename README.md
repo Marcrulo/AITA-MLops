@@ -1,1 +1,1 @@
-# Demo-MLops
+# AITA-MLops

@@ -35,5 +35,5 @@ jobs:
         ECR_REPOSITORY: docker-mlops-aita
         IMAGE_TAG: deployment
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -f "Docker/data.dockerfile" -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

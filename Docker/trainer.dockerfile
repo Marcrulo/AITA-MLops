@@ -6,7 +6,7 @@ COPY requirements.txt requirements.txt
 COPY data/make_dataset.py data/make_dataset.py
 COPY data/tokenized data/tokenized
 COPY models/ models/
-COPY config/ config/
+COPY configs/ configs/
 
 # install python packages
 RUN pip install -r requirements.txt --no-cache-dir

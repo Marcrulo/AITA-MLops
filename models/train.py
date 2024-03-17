@@ -19,9 +19,6 @@ from models.model import ModelClass
 # logger = transformer_log.get_logger("transformers")
 
 
-
-
-
 # load data
 dataset = load_from_disk('data/tokenized/dataset.hf')
 # print("Dataframe loaded")

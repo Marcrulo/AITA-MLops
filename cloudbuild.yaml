@@ -1,5 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/gpu_test:latest','-f','gpu.dockerfile','Docker']
+  args: ['build', '-t', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/gpu_test:latest','-f','Docker/gpu.dockerfile','.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/gpu_test:latest']

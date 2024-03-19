@@ -1,6 +1,7 @@
 FROM python:3.10.13-slim
 
 COPY test.py test.py
+COPY requirements.txt requirements.txt
 
 # install python
 RUN apt update && \

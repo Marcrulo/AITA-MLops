@@ -20,6 +20,25 @@ logger.addHandler(file_handler)
 from models.model import ModelClass
 
 
+
+
+'''
+GCP BUCKET
+'''
+from google.cloud import storage
+
+# Create a storage client
+storage_client = storage.Client()
+
+# Specify the bucket and blob (file) names
+bucket_name = 'aita_datasets'
+
+# Get a reference to the bucket
+bucket = storage_client.bucket(bucket_name)
+
+
+
+
 '''
 RAW DATA
 '''
@@ -45,12 +64,17 @@ try:
         train_df = train_dataset.to_pandas()
         logger.info("Saving raw dataset...")
         train_df.to_csv(path_raw+file, index=False)
-        del train_df, train_dataset, dataset
         logger.info("Dataset saved!")
+        del train_df, train_dataset, dataset
+        blob = bucket.blob(file)
+        blob.upload_from_filename(path_raw+file)
+        logger.info(f'File {file} uploaded to gs://{bucket_name}/{blob_name}')
 
 except Exception as e:
     logger.exception(e)
     assert "Error with downloading raw dataset"
+
+exit()
 
 '''
 PROCESSED DATA

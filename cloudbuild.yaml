@@ -1,5 +1,5 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/test:testing','-f','Docker/test.dockerfile','.']
+  args: ['build', '-t', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/data:testing','-f','Docker/data.dockerfile','.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/test:testing']
+  args: ['push', 'europe-west4-docker.pkg.dev/aita-mlops/aitaregistry/data:testing']

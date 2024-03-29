@@ -6,6 +6,8 @@ RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/* 
 
+ENV PORT 8080
+ENV HOST 0.0.0.0
 
 # move files to container
 COPY requirements.txt requirements.txt

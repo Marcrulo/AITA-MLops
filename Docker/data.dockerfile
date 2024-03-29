@@ -20,4 +20,4 @@ WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 
 # entrypoint
-ENTRYPOINT ["python", "-m", "data.make_dataset"]
+ENTRYPOINT ["python", "-m", "data.make_dataset_gcp"]

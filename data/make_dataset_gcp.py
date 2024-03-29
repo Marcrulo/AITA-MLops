@@ -37,26 +37,25 @@ bucket_name = 'aita_datasets'
 bucket = storage_client.bucket(bucket_name)
 
 
+def exists_in_gcs(object_name):
+    blob = bucket.blob(object_name)
+    return blob.exists()
+
+
 
 '''
 RAW DATA
 '''
 try:
-    # Check if path exists
-    path_raw = 'data/raw/'
-    if not os.path.exists(path_raw):
-        # Create folder if it does not exist
-        logger.info(f'Path "{path_raw}" does not exist. \n[Creating path "{path_raw}"]')
-        os.makedirs(path_raw)
-        
-
     # Check if file exists
+    path_raw = 'data/raw/'   
     file = 'AITA-Reddit-Dataset.csv'
-    if os.path.exists(path_raw+file):
+    if exists_in_gcs(path_raw+file):
         logger.info(f'Path "{path_raw+file}" already exists. \n[Skipping downloading raw dataset]')
 
     # Load and save raw dataset
     else:
+        os.makedirs(path_raw)
         logger.info("Loading raw dataset...")
         dataset = load_dataset("OsamaBsher/AITA-Reddit-Dataset")
         train_dataset = dataset['train']
@@ -74,26 +73,30 @@ except Exception as e:
     assert "Error with downloading raw dataset"
 
 
+
+
 '''
 PROCESSED DATA
 '''
 
 try: 
-    # Check if path exists
-    path_processed = 'data/processed/'
-    if not os.path.exists(path_processed):
-        logger.info(f'Path "{path_processed}" does not exist. \n[Creating path "{path_processed}"]')
-        os.makedirs(path_processed)
 
     # Check if file exists
+    path_processed = 'data/processed/'
     file = 'AITA-Reddit-Dataset.csv'
-    if os.path.exists(path_processed+file):
+    if exists_in_gcs(path_processed+file):
         logger.info("Processed dataset already exists. \n[Skipping processing data]")
+    
     else:
+        os.makedirs(path_processed)
         logger.info("Processing data...")
 
         # Process data
-        df = pd.read_csv(path_raw+file)
+        #df = pd.read_csv(path_raw+file)
+        blob = bucket.blob(path_raw+file)
+        file_contents = blob.download_as_string()
+        df = pd.read_csv(io.BytesIO(file_contents))
+        
         df = df[["text", "verdict"]]
         preprocessor = ColumnTransformer(
         transformers=[
@@ -108,6 +111,10 @@ try:
         del df, processed, preprocessor
         logger.info("Processing done!")
         
+        blob = bucket.blob(path_processed+file)
+        blob.upload_from_filename(path_processed+file)
+        logger.info(f'File {file} uploaded to gs://{bucket_name}/{blob_name}')
+        
 except Exception as e:
     logger.exception(e)
     assert "Error with downloading processed dataset"   
@@ -117,15 +124,10 @@ except Exception as e:
 TOKENIZED DATA
 '''    
 try: 
-    # Check if path exists
-    path_tokenized = 'data/tokenized/'
-    if not os.path.exists(path_tokenized):
-        logger.info(f'Path "{path_tokenized}" does not exist. \n[Creating path "{path_tokenized}"]')
-        os.makedirs(path_tokenized)
-
     # Check if file exists
+    path_tokenized = 'data/tokenized/'
     file = 'dataset.hf'
-    if os.path.exists(path_tokenized+file):
+    if exists_in_gcs(path_tokenized+file):
         logger.info("Tokenized dataset already exists. \n[Skipping tokenizing data]")
     else:
         logger.info("Tokenizing data...")
@@ -141,7 +143,11 @@ try:
         tokenizer = Model.load_tokenizer()
 
         # Create Dataset
-        df = pd.read_csv('data/processed/AITA-Reddit-Dataset.csv')
+        # df = pd.read_csv(path_processed+file)
+        blob = bucket.blob(path_processed+file)
+        file_contents = blob.download_as_string()
+        df = pd.read_csv(io.BytesIO(file_contents))
+        
         base_dataset = Dataset.from_pandas(df)
 
         # Vectorize labels
@@ -164,7 +170,11 @@ try:
         dataset['test'] = validation_test_dataset['test']
 
         # save dataset
-        dataset.save_to_disk(f'data/tokenized/{file}')
+        dataset.save_to_disk(path_tokenized+file)
+        
+        blob = bucket.blob(path_tokenized+file)
+        blob.upload_from_filename(path_tokenized+file)
+        logger.info(f'File {file} uploaded to gs://{bucket_name}/{blob_name}')
         
 except Exception as e:
     logger.exception(e)

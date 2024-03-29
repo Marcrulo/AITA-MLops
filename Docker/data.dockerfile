@@ -11,7 +11,7 @@ ENV HOST 0.0.0.0
 
 # move files to container
 COPY requirements.txt requirements.txt
-COPY data/make_dataset.py data/make_dataset.py
+COPY data/make_dataset_gcp.py data/make_dataset_gcp.py
 COPY models/ models/
 COPY configs/ configs/
 
